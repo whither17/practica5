@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/sprites">
+        <file>sprites.png</file>
+    </qresource>
+    <qresource prefix="/level1">
+        <file>PacmanLevel-1.png</file>
+    </qresource>
+</RCC>
