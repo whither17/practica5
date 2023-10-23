@@ -1,8 +1,14 @@
 #include "ghost.h"
 
-ghost::ghost()
+ghost::ghost(QString name)
 {
+    if(name == "red") cut_sprites_color(":/sprites/sprites.png", "red");
+    if(name == "pink") cut_sprites_color(":/sprites/sprites.png", "pink");
+    if(name == "cian") cut_sprites_color(":/sprites/sprites.png", "cian");
+    if(name == "yellow") cut_sprites_color(":/sprites/sprites.png", "yellow");
 
+    cut_sprites_azules(":/sprites/sprites.png");
+    cut_sprites_ojos(":/sprites/sprites.png");
 }
 
 void ghost::cut_sprites_color(QString name, QString color)
@@ -42,8 +48,7 @@ void ghost::cut_sprites_azules(QString name)
     image.load(name);
     for(int i = 0; i < sprites_weight*4; i += sprites_weight) {
         sprites_azules.push_back(image.copy(i, 7*sprites_height, sprites_weight, sprites_height));
-    }
-    setPixmap(sprites_azules[0]);
+    }  
 }
 
 void ghost::cut_sprites_ojos(QString name)
@@ -53,6 +58,11 @@ void ghost::cut_sprites_ojos(QString name)
     for(int i = 0; i < sprites_weight*4; i += 2*sprites_weight) {
         ojos.push_back(image.copy(i, 6*sprites_height, sprites_weight, sprites_height));
     }
-    setPixmap(ojos[0]);
 }
+
+ghost::~ghost()
+{
+
+}
+
 

@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include <QGraphicsScene>
+#include <QKeyEvent>
+#include <iostream>
 #include "map.h"
 #include "macros.h"
 #include "player.h"
@@ -18,6 +20,7 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
+    void keyPressEvent(QKeyEvent *i);
     ~MainWindow();
 
 private:

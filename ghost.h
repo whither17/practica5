@@ -16,10 +16,11 @@ private:
     std::vector <QPixmap> sprites_azules;
     std::vector <QPixmap> ojos;
 public:
-    ghost();
+    ghost(QString name);
     void cut_sprites_color(QString name, QString color);
     void cut_sprites_azules(QString name);
     void cut_sprites_ojos(QString name);
+    ~ghost();
 
 };
 

@@ -9,6 +9,7 @@ class map : public QObject, public QGraphicsPixmapItem
 {
 public:
     map(QString name);
+    ~map();
 };
 
 #endif // MAP_H
