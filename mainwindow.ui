@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>544</height>
+    <width>511</width>
+    <height>842</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -38,21 +38,8 @@
       <x>0</x>
       <y>0</y>
       <width>511</width>
-      <height>561</height>
+      <height>751</height>
      </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>640</x>
-      <y>30</y>
-      <width>80</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Play</string>
     </property>
    </widget>
   </widget>

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QGraphicsPixmapItem>
 #include <QString>
+#include "item.h"
 
 class map : public QObject, public QGraphicsPixmapItem
 {

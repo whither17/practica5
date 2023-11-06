@@ -9,17 +9,26 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    compass.cpp \
+    dot.cpp \
     ghost.cpp \
+    item.cpp \
     main.cpp \
     mainwindow.cpp \
     map.cpp \
+    pellet.cpp \
     player.cpp
 
 HEADERS += \
+    character.h \
+    compass.h \
+    dot.h \
     ghost.h \
+    item.h \
     macros.h \
     mainwindow.h \
     map.h \
+    pellet.h \
     player.h
 
 FORMS += \
