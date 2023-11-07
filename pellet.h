@@ -11,7 +11,12 @@ public:
     pellet();
     void sprite(QString name);
     void eaten();
+public slots:
     void shine();
+signals:
+    void pelletEaten();
+private:
+    bool pop;
 };
 
 #endif // PELLET_H

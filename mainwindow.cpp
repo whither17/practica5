@@ -29,8 +29,10 @@ MainWindow::MainWindow(QWidget *parent)
     ghost_cian = new ghost("cian", compass);
     ghost_yellow = new ghost("yellow", compass);
     pacmanMove = new QTimer(this);
+    pelletShine = new QTimer(this);
 
     pacmanMove->start(20);
+    pelletShine->start(80);
     compass->initMap();
     escena->addItem(nivel);
     escena->addItem(pacman);
@@ -47,11 +49,13 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(compass, SIGNAL(eat(QPoint)), this, SLOT(dotsAte(QPoint)));
     connect(pacmanMove, SIGNAL(timeout()), pacman, SLOT(move()));
+    connect(pacmanMove, SIGNAL(timeout()), ghost_pink, SLOT(move()));
 
-    ghost_red->setPos(width_/2,0);
-    ghost_pink->setPos((ui->graphicsView->width()/2) -57, 259);
-    ghost_cian->setPos((ui->graphicsView->width()/2) -25, (ui->graphicsView->height()/2)-32);
-    ghost_yellow->setPos((ui->graphicsView->width()/2)+10,(ui->graphicsView->height()/2)-32);
+
+    ghost_red->setPos(width_/2,220);
+    ghost_pink->setPos(width_/2 - 32, 259);
+    ghost_cian->setPos(width_/2 , 259);
+    ghost_yellow->setPos(width_/2 + 32,259);
     putDots();
     ui->graphicsView->setFixedWidth(490);
     ui->graphicsView->setFixedHeight(543);
@@ -86,6 +90,7 @@ void MainWindow::putDots()
         item[pos.x()][pos.y()] = new pellet;
         item[pos.x()][pos.y()]->setPos(16 * pos.y(),35+16*pos.x());
         escena->addItem(item[pos.x()][pos.y()]);
+        connect(pelletShine, SIGNAL(timeout()),  item[pos.x()][pos.y()], SLOT(shine()));
     }
 }
 

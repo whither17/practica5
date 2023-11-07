@@ -14,6 +14,7 @@
 
 class ghost : public QObject, public QGraphicsPixmapItem
 {
+    Q_OBJECT
 private:
     std::vector <QPixmap> sprites_color;
     std::vector <QPixmap> sprites_azules;
@@ -25,7 +26,7 @@ private:
     QTimer *switchTimer, *chaseTimer, *nerfTimer, *shine;
     Compass *compass;
     bool nerf, isAlive;
-    int index_i, index_j;
+    int index_i, index_j, index_o;
     int mode, prevMode;
     int remainNerf;
     qreal step_size;
@@ -33,6 +34,7 @@ private:
 public slots:
     void move();
     void switchAnimate();
+    void nerfInterval();
 public:
     ghost(QString name, Compass *compass_ipt);
     void cut_sprites_color(QString name, QString color);

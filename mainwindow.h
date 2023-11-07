@@ -44,7 +44,7 @@ private:
     ghost *ghost_red, *ghost_pink, *ghost_cian, *ghost_yellow;
     Character *pacman;
     QGraphicsTextItem *score, *puntos;
-    QTimer *pacmanMove;
+    QTimer *pacmanMove, *pelletShine;
 };
 
 #endif // MAINWINDOW_H

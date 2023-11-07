@@ -3,6 +3,7 @@
 pellet::pellet()
 {
     sprite(":/sprites/sprites.png");
+    pop = true;
 }
 
 void pellet::sprite(QString name)
@@ -14,10 +15,16 @@ void pellet::sprite(QString name)
 
 void pellet::eaten()
 {
-
+    emit pelletEaten();
+    delete this;
 }
 
 void pellet::shine()
 {
-
+    pop = !pop;
+    if(pop)
+    {
+       show();
+    }
+    else hide();
 }
