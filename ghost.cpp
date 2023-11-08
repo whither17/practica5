@@ -1,10 +1,9 @@
 #include "ghost.h"
 
-ghost::ghost(QString name, Compass *compass_ipt): compass(compass_ipt)
+ghost::ghost(QString name, Compass *compass_ipt, player *ply): compass(compass_ipt), ply(ply)
 {
-    setOffset(QPoint(-8, -8));
-    tmpDir = QPoint(-1, -1);
-    direction = QPointF(1, 0);
+    tmpDir = QPoint(0, 0);
+    direction = QPointF(-1, 0);
 
     if(name == "red") cut_sprites_color(":/sprites/sprites.png", "red");
     if(name == "pink") cut_sprites_color(":/sprites/sprites.png", "pink");
@@ -15,22 +14,19 @@ ghost::ghost(QString name, Compass *compass_ipt): compass(compass_ipt)
     cut_sprites_ojos(":/sprites/sprites.png");
 
     switchTimer = new QTimer();
-    nerfTimer = new QTimer();
 
     connect(switchTimer, SIGNAL(timeout()), this, SLOT(switchAnimate()));
     connect(compass, SIGNAL(powerUp()), this, SLOT(nerfInterval()));
     switchTimer->start(80);
     index_i = 1;
     index_j = 0;
+    i = 0;
 
     nerf = false;
-    home = false;
     isAlive = true;
-    remainNerf = 0;
 }
 
 void ghost::cut_sprites_color(QString name, QString color)
-
 {
     QPixmap image;
     image.load(name);
@@ -56,6 +52,8 @@ void ghost::cut_sprites_color(QString name, QString color)
     }
 }
 
+
+
 void ghost::cut_sprites_azules(QString name)
 {
     QPixmap image;
@@ -74,26 +72,75 @@ void ghost::cut_sprites_ojos(QString name)
     }
 }
 
+void ghost::collidPacman()
+{
+    if(nerf == false) {
+        if(collidesWithItem(ply))
+            emit fail();
+    }
+    else
+    {
+        if(collidesWithItem(ply))
+            kill();
+    }
+}
+
 void ghost::move()
 {
-    if(compass->canMove(pos(), direction))
-        setPos(pos() + direction *1);
+    collidPacman();
+
+
+    if(i > 3)
+    i = 0;
+
+    QPoint dr[] = {Up, Down, Left, Right};
+
+    if (y() == 259. && (x() < 0 || x() >= 448)) {
+        if (tmpDir == Left || tmpDir == Right)
+            direction = tmpDir;
+        if (direction == Left)
+        {
+            setTransformOriginPoint(sprites_weight/2, sprites_height/2);
+            setRotation(180);
+        }
+        else if (direction == Right)
+        {
+            setTransformOriginPoint(sprites_weight/2, sprites_height/2);
+            setRotation(0);
+        }
+        setPos(pos() + direction);
+
+        if (x() < -30)
+            setX(478);
+        else if (x() > 478)
+            setX(-30);
+    }
+
+    else if(compass->canMove(pos(), direction))
+        setPos(pos()+direction);
+    else
+    {
+        direction = dr[i];
+        i = rand()%4;
+        qDebug() << i;
+    }
+
 }
 
 void ghost::switchAnimate()
 {
     if (!nerf) {
-        if (direction == Dir::Up)
+        if (direction == Up)
         {
             index_o = 3;
             index_i = 6;
         }
-        else if (direction == Dir::Down)
+        else if (direction == Down)
         {
             index_o = 1;
             index_i = 2;
         }
-        else if (direction == Dir::Left)
+        else if (direction == Left)
         {
             index_o = 2;
             index_i = 4;
@@ -117,15 +164,20 @@ void ghost::switchAnimate()
         index_j = 0;
 }
 
+void ghost::kill()
+{
+    setPos(width_/2,259-47);
+    nerf = false;
+}
+
+
 void ghost::nerfInterval()
 {
-
     nerf = true;
 }
 
 ghost::~ghost()
 {
-    delete nerfTimer;
     delete switchTimer;
 }
 

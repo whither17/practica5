@@ -20,7 +20,6 @@ SOURCES += \
     player.cpp
 
 HEADERS += \
-    character.h \
     compass.h \
     dot.h \
     ghost.h \

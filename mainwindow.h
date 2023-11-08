@@ -11,7 +11,6 @@
 #include "player.h"
 #include "ghost.h"
 #include "compass.h"
-#include "character.h"
 #include "item.h"
 #include "dot.h"
 #include "pellet.h"
@@ -41,8 +40,8 @@ private:
     QGraphicsScene *escena;
     Compass *compass;
     map *nivel;
-    ghost *ghost_red, *ghost_pink, *ghost_cian, *ghost_yellow;
-    Character *pacman;
+    ghost *ghost_yellow;
+    player *pacman;
     QGraphicsTextItem *score, *puntos;
     QTimer *pacmanMove, *pelletShine;
 };

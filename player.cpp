@@ -51,17 +51,21 @@ void player::addScore(int value)
 
 void player::setDirection(QPoint dir)
 {
-    if (x() == 216 && y() == 403 && direction == QPoint(0, 0) && (dir == Dir::Left || dir == Dir::Right)) { //spawn
-        if (dir == Dir::Left) {
-            setTransformOriginPoint(sprites_weight/2, sprites_height/2);
-            setRotation(180);
+    if(isAlive)
+    {
+        if (x() == 216 && y() == 403 && direction == QPoint(0, 0) && (dir == Left || dir == Right)) { //spawn
+            if (dir == Left) {
+                setTransformOriginPoint(sprites_weight/2, sprites_height/2);
+                setRotation(180);
+            }
+            else if (dir == Right) {
+                setTransformOriginPoint(sprites_weight/2, sprites_height/2);
+                setRotation(0);
+            }
         }
-        else if (dir == Dir::Right) {
-            setTransformOriginPoint(sprites_weight/2, sprites_height/2);
-            setRotation(0);
-        }
+        tmpDir = dir;
     }
-    tmpDir = dir;
+
 }
 
 void player::setScore(unsigned long newScore)
@@ -77,70 +81,73 @@ unsigned long player::getScore()
 void player::move() {
 
     compass->setPos(pos());
-
-    if (y() == 259. && (x() < 0 || x() >= 448)) {
-        if (tmpDir == Dir::Left || tmpDir == Dir::Right)
-            direction = tmpDir;
-        if (direction == Dir::Left)
-        {
-            setTransformOriginPoint(sprites_weight/2, sprites_height/2);
-            setRotation(180);
-        }
-        else if (direction == Dir::Right)
-        {
-            setTransformOriginPoint(sprites_weight/2, sprites_height/2);
-            setRotation(0);
-        }
-        setPos(pos() + direction * 2);
-
-        if (x() < -30)
-            setX(478);
-        else if (x() > 478)
-            setX(-30);
-    }
-    // movimiento normal del pacman
-    else if (int(y() - 35) % 16 == 0 && int(x()) % 16 == 0) {
-
-        compass->setLoc(QPoint(int(y()-35) / 16, int(x()) / 16), 'a');
-        if (tmpDir != direction && compass->canMove(pos(), tmpDir)) {
-            direction = tmpDir;
-            if (direction == Dir::Up)
-            {
-                setTransformOriginPoint(sprites_weight/2, sprites_height/2);
-                setRotation(270);
-            }
-            else if (direction == Dir::Down)
-            {
-                setTransformOriginPoint(sprites_weight/2, sprites_height/2);
-                setRotation(90);
-            }
-            else if (direction == Dir::Left)
+    if(isAlive)
+    {
+        if (y() == 259. && (x() < 0 || x() >= 448)) {
+            if (tmpDir == Left || tmpDir == Right)
+                direction = tmpDir;
+            if (direction == Left)
             {
                 setTransformOriginPoint(sprites_weight/2, sprites_height/2);
                 setRotation(180);
             }
-            else if (direction == Dir::Right)
+            else if (direction == Right)
             {
                 setTransformOriginPoint(sprites_weight/2, sprites_height/2);
                 setRotation(0);
             }
+            setPos(pos() + direction * 2);
+
+            if (x() < -30)
+                setX(478);
+            else if (x() > 478)
+                setX(-30);
         }
-        else if (compass->canMove(pos(), direction)) {
-            compass->check(pos(), direction);
-            setPos(pos() + direction*2);
-            switchTimer->start();
+        // movimiento normal del pacman
+        else if (int(y() - 35) % 16 == 0 && int(x()) % 16 == 0) {
+
+            compass->setLoc(QPoint(int(y()-35) / 16, int(x()) / 16), 'a');
+            if (tmpDir != direction && compass->canMove(pos(), tmpDir)) {
+                direction = tmpDir;
+                if (direction == Up)
+                {
+                    setTransformOriginPoint(sprites_weight/2, sprites_height/2);
+                    setRotation(270);
+                }
+                else if (direction == Down)
+                {
+                    setTransformOriginPoint(sprites_weight/2, sprites_height/2);
+                    setRotation(90);
+                }
+                else if (direction == Left)
+                {
+                    setTransformOriginPoint(sprites_weight/2, sprites_height/2);
+                    setRotation(180);
+                }
+                else if (direction == Right)
+                {
+                    setTransformOriginPoint(sprites_weight/2, sprites_height/2);
+                    setRotation(0);
+                }
+            }
+            else if (compass->canMove(pos(), direction)) {
+                compass->check(pos(), direction);
+                setPos(pos() + direction*2);
+                switchTimer->start();
+            }
+            else {
+                compass->check(pos(), direction);
+                switchTimer->start();
+                setPixmap(sprites_alive[1]);
+            }
         }
-        else {
-            compass->check(pos(), direction);
-            switchTimer->start();
-            setPixmap(sprites_alive[1]);
-        }
+        else
+          setPos(pos() + direction*2);
     }
-    else
-        setPos(pos() + direction*2);
 }
 
 void player::switchAnimate() {
+
     if (isAlive) {
         setPixmap(sprites_alive[index]);
         index += add;
@@ -154,10 +161,18 @@ void player::switchAnimate() {
         }
         else if (index >= 11) {
             switchTimer->stop();
-            isAlive = true;
+            add = 0;
+            //isAlive = true;
             hide();
         }
     }
+}
+
+void player::die()
+{
+    isAlive = false;
+    index = 0;
+    add = 1;
 }
 
 player::~player()

@@ -5,7 +5,8 @@
 #include <QGraphicsItem>
 #include <QDebug>
 
-class Compass: public QObject {
+class Compass: public QObject
+{
     Q_OBJECT
 public:
     Compass(QObject *parent = 0);

@@ -24,10 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     nivel->setPos(7,10);
 
     pacman = new player(compass);
-    ghost_red = new ghost("red", compass);
-    ghost_pink = new ghost("pink", compass);
-    ghost_cian = new ghost("cian", compass);
-    ghost_yellow = new ghost("yellow", compass);
+    ghost_yellow = new ghost("yellow", compass, pacman);
     pacmanMove = new QTimer(this);
     pelletShine = new QTimer(this);
 
@@ -36,9 +33,6 @@ MainWindow::MainWindow(QWidget *parent)
     compass->initMap();
     escena->addItem(nivel);
     escena->addItem(pacman);
-    escena->addItem(ghost_red);
-    escena->addItem(ghost_pink);
-    escena->addItem(ghost_cian);
     escena->addItem(ghost_yellow);
     escena->addItem(score);
     escena->addItem(puntos);
@@ -49,13 +43,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(compass, SIGNAL(eat(QPoint)), this, SLOT(dotsAte(QPoint)));
     connect(pacmanMove, SIGNAL(timeout()), pacman, SLOT(move()));
-    connect(pacmanMove, SIGNAL(timeout()), ghost_pink, SLOT(move()));
+    connect(pacmanMove, SIGNAL(timeout()), ghost_yellow, SLOT(move()));
+    connect(ghost_yellow, SIGNAL(fail()), pacman, SLOT(die()));
 
 
-    ghost_red->setPos(width_/2,220);
-    ghost_pink->setPos(width_/2 - 32, 259);
-    ghost_cian->setPos(width_/2 , 259);
-    ghost_yellow->setPos(width_/2 + 32,259);
+    ghost_yellow->setPos(width_/2,259-47);
     putDots();
     ui->graphicsView->setFixedWidth(490);
     ui->graphicsView->setFixedHeight(543);
@@ -63,16 +55,15 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
-
 {
     if ((event->key() == Qt::Key_W))
-        pacman->setDirection(Dir::Up);
+        pacman->setDirection(Up);
     else if ((event->key() == Qt::Key_S))
-        pacman->setDirection(Dir::Down);
+        pacman->setDirection(Down);
     else if ((event->key() == Qt::Key_A))
-        pacman->setDirection(Dir::Left);
+        pacman->setDirection(Left);
     else if ((event->key() == Qt::Key_D))
-        pacman->setDirection(Dir::Right);
+        pacman->setDirection(Right);
 }
 
 void MainWindow::putDots()
@@ -108,9 +99,6 @@ MainWindow::~MainWindow()
     delete score;
     delete pacman;
     delete compass;
-    delete ghost_red;
-    delete ghost_pink;
-    delete ghost_cian;
     delete ghost_yellow;
 }
 
